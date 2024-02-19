@@ -12,7 +12,7 @@ class CPU():
     def fetch_core_usage(self):
         self.core_usage = psutil.cpu_percent(interval=1, percpu=True)
 
-    def return_data(self):
+    def return_cpu_data(self):
         self.fetch_core_usage()
         self.fetch_cpu_usage()
 
