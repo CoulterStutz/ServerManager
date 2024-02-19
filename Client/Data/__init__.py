@@ -1,3 +1,5 @@
+import datetime
+
 from .cpu import CPU
 from .storage import Storage
 from .network import Network
@@ -17,12 +19,14 @@ class DataManager():
         network_data = self.network_manager.return_network_data()
         ram_data = self.ram_manager.return_ram_data()
 
-        return {
+        data = {
             "CPUData": cpu_data,
             "StorageData": storage_data,
             "NetworkData": network_data,
             "RAMData": ram_data
         }
+
+        return data
 
     def return_data_json(self):
         return json.dumps(self.get_all_data(), indent=4)
