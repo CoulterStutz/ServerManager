@@ -1,7 +1,7 @@
-from cpu import CPU
-from storage import Storage
-from network import Network
-from mem import RAM
+from .cpu import CPU
+from .storage import Storage
+from .network import Network
+from .mem import RAM
 import json
 
 class DataManager():
@@ -26,8 +26,3 @@ class DataManager():
 
     def return_data_json(self):
         return json.dumps(self.get_all_data(), indent=4)
-
-# Example usage
-if __name__ == '__main__':
-    data_manager = DataManager()
-    print(data_manager.return_data_json())
