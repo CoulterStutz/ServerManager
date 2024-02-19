@@ -1,2 +1,3 @@
 class WebHookManager():
-    None
+    def __init__(self):
+        None
