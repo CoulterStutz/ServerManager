@@ -1,4 +1,5 @@
-from flask import *
+from flask import Flask
+import flask
 
 class WebInterface():
     def __init__(self) -> None:
