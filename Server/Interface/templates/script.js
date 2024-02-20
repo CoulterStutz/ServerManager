@@ -1,4 +1,4 @@
-let db;
+/*let db;
 fetch('stats.db')
   .then(response => response.arrayBuffer())
   .then(buffer => {
@@ -9,3 +9,4 @@ fetch('stats.db')
   .catch(error => {
     console.error('Error opening database:', error);
   });
+*/
