@@ -17,17 +17,24 @@ class RAM():
 
     def fetch_ram_data(self):
         # Use WMI to get detailed RAM information including RAM speed of each stick
-        w = wmi.WMI()
-        ram_modules = w.Win32_PhysicalMemory()
-        self.ram_speeds = [int(module.ConfiguredClockSpeed) for module in ram_modules]
+        try:
+            w = wmi.WMI()
+            ram_modules = w.Win32_PhysicalMemory()
+            self.ram_speeds = [int(module.ConfiguredClockSpeed) for module in ram_modules]
 
-        # Calculate stick usage using Capacity and FreePhysicalMemory attributes
-        os_info = w.Win32_OperatingSystem()[0]
-        total_physical_memory = int(os_info.TotalVisibleMemorySize)
-        free_physical_memory = int(os_info.FreePhysicalMemory)
-        self.stick_usage = [int(module.Capacity) - free_physical_memory * 1024 for module in ram_modules]
+            # Calculate stick usage using Capacity and FreePhysicalMemory attributes
+            os_info = w.Win32_OperatingSystem()[0]
+            total_physical_memory = int(os_info.TotalVisibleMemorySize)
+            free_physical_memory = int(os_info.FreePhysicalMemory)
+            self.stick_usage = [int(module.Capacity) - free_physical_memory * 1024 for module in ram_modules]
 
-        self.ram_usage = (total_physical_memory - free_physical_memory) / total_physical_memory * 100
+            self.ram_usage = (total_physical_memory - free_physical_memory) / total_physical_memory * 100
+        except:
+            self.total_ram_sticks = 0
+            self.total_ram_gb = 0
+            self.total_ram_speeds = 0
+            self.ram_usage = 0
+            self.stick_usage = 0
 
     def return_ram_data(self):
         self.fetch_ram_data()
