@@ -1,5 +1,9 @@
 {
   "Servers": {
     "TestServer1": "127.0.0.1:5000"
-  }
+  },
+  "QuerySettings": {
+    "TTW": 1
+  },
+  "InterfaceSettings": {}
 }

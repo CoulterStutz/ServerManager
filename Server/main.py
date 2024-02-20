@@ -6,5 +6,6 @@ server_stats = {"TestServer1": None}
 
 while True:
     server_stats = webhook.fetch_server_data(servers)
-    print(server_stats)
+    for x in server_stats:
+        print(x, server_stats[x])
     time.sleep(1)
