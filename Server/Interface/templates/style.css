@@ -1,24 +1,30 @@
+html{
+    background: #333;
+}
+
 .servers{
     display: table;
     text-align: center;
     margin: auto;
     width: 50%;
+    color: white;
 }
 
 .server{
-    background-color: rgb(202, 255, 255);
+    background-color: rgba(161, 0, 161, 0.253);
     padding: 10px;
     border-radius: 20px;
-    border: 2px solid cyan;
+    border: 2px solid rgb(162, 0, 255);
     display: flex;
 }
 
 .metric{
     width: 15%;
     padding: 10px;
-    background-color: aliceblue;
+    background-color: rgb(45, 0, 82);
     border-radius: 10px;
-    border: 2px solid cyan;
+    border: 2px solid rgb(255, 0, 221);
+    color: white;
     margin: 4px;
 }
 
@@ -34,4 +40,11 @@
     font-size: 20px;
     text-align: center;
     color: red;
+}
+
+.graphs{
+    padding-top: 10%;
+    margin: auto;
+    width: 30%;
+    text-align: center;
 }
