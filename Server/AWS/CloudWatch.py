@@ -89,7 +89,7 @@ class CloudWatch:
                             'Value': 'Server'
                         },
                     ],
-                    'Unit': 'Bytes',
+                    'Unit': 'Count',
                     'Value': data['StorageData']['DriveCount']
                 },
             ]
