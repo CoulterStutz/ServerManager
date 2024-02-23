@@ -131,6 +131,26 @@ class CloudWatch:
                 ]
             )
 
+            for i, drive in enumerate(data['StorageData']['DrivesWriteOperations'], 1):
+                self.cloudwatch.put_metric_data(
+                    Namespace=f'ServerManager/Storage',
+                    MetricData=[
+                        {
+                            'MetricName': f'UsedStorageDrive{i}',
+                            'Dimensions': [
+                                {
+                                    'Name': server,
+                                    'Value': 'Server'
+                                },
+                            ],
+                            'Unit': 'Count',
+                            'Value': drive
+                        },
+                    ]
+                )
+
+
+
         # Network Metrics
         for interface, status in data['NetworkData']['LinkStatus'].items():
             self.cloudwatch.put_metric_data(
