@@ -11,9 +11,6 @@ AWSSettings = {
     "PinpointSettings": {
         "AlertSettings": {
             "CallWhenServerDown": True,
-        },
-        "MessageSettings": {
-            "ServerDown": "This is an automated message from server manager, the following servers are down"
         }
     }
 }
