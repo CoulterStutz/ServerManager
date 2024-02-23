@@ -78,6 +78,24 @@ class CloudWatch:
             ]
         )
 
+        for i, drive in enumerate(data['StorageData']['DrivesFreeStorage'], 1):
+            self.cloudwatch.put_metric_data(
+                Namespace=f'ServerManager/Storage',
+                MetricData=[
+                    {
+                        'MetricName': f'FreeStorageDrive{i}',
+                        'Dimensions': [
+                            {
+                                'Name': server,
+                                'Value': 'Server'
+                            },
+                        ],
+                        'Unit': 'Bytes',
+                        'Value': drive
+                    },
+                ]
+            )
+
         for i, drive in enumerate(data['StorageData']['DrivesUsedStorage'], 1):
             self.cloudwatch.put_metric_data(
                 Namespace=f'ServerManager/Storage',
