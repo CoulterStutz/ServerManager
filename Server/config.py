@@ -9,8 +9,8 @@ QuerySettings = {
 AWSSettings = {
     "RegionName": "us-west-2",
     "PinpointSettings": {
-        "ApplicationID": "3441d6e35f524c6ea2f1f3f6512fa97b",
-        "DestinationNumbers": ["+17202020350"],
+        "ApplicationID": "YOUR-APPLICATION-ID",
+        "DestinationNumbers": [],
         "AlertSettings": {
             "CallWhenServerDown": True,
         }
