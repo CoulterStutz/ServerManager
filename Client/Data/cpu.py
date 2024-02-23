@@ -21,4 +21,4 @@ class CPU():
 # Example usage
 if __name__ == '__main__':
     c = CPU()
-    print(c.return_data())
+    print(c.return_cpu_data())
