@@ -6,12 +6,30 @@ class CloudWatch():
 
     def report_metric(self, server, data):
         # CPU Metrics
+        total_cpu_usage = sum(data['CPUData']['CoreUsage'])
+        self.cloudwatch.put_metric_data(
+            Namespace='ServerManager/CPU',
+            MetricData=[
+                {
+                    'MetricName': 'TotalUsage',
+                    'Dimensions': [
+                        {
+                            'Name': 'Server',
+                            'Value': server
+                        },
+                    ],
+                    'Unit': 'Percent',
+                    'Value': total_cpu_usage
+                },
+            ]
+        )
+
         for core, usage in enumerate(data['CPUData']['CoreUsage'], 1):
-            self.client.put_metric_data(
-                Namespace="ServerManager",
+            self.cloudwatch.put_metric_data(
+                Namespace=f'ServerManager/CPU',
                 MetricData=[
                     {
-                        'MetricName': f'CPU{core}Usage',
+                        'MetricName': 'Usage',
                         'Dimensions': [
                             {
                                 'Name': 'Server',
@@ -25,69 +43,52 @@ class CloudWatch():
             )
 
         # Storage Metrics
-        self.cloudwatch.put_metric_data(
-            Namespace="",
-            MetricData=[
-                {
-                    'MetricName': 'StorageTotalFree',
-                    'Dimensions': [
-                        {
-                            'Name': 'Server',
-                            'Value': server
-                        },
-                    ],
-                    'Unit': 'Bytes',
-                    'Value': data['StorageData']['TotalFreeStorage']
-                },
-                {
-                    'MetricName': 'StorageTotalUsed',
-                    'Dimensions': [
-                        {
-                            'Name': 'Server',
-                            'Value': server
-                        },
-                    ],
-                    'Unit': 'Bytes',
-                    'Value': data['StorageData']['TotalUsedStorage']
-                },
-            ]
-        )
+        for i, drive in enumerate(data['StorageData']['DrivesFreeStorage'], 1):
+            self.cloudwatch.put_metric_data(
+                Namespace=f'ServerManager/StorageDrive{i}',
+                MetricData=[
+                    {
+                        'MetricName': 'FreeStorage',
+                        'Dimensions': [
+                            {
+                                'Name': 'Server',
+                                'Value': server
+                            },
+                        ],
+                        'Unit': 'Bytes',
+                        'Value': drive
+                    },
+                ]
+            )
 
         # Network Metrics
-        self.cloudwatch.put_metric_data(
-            Namespace=self.namespace,
-            MetricData=[
-                {
-                    'MetricName': 'NetworkTotalPacketsIn',
-                    'Dimensions': [
-                        {
-                            'Name': 'Server',
-                            'Value': server
-                        },
-                    ],
-                    'Unit': 'Count',
-                    'Value': data['NetworkData']['TotalPacketsInAllInterfaces']
-                },
-                {
-                    'MetricName': 'NetworkTotalPacketsOut',
-                    'Dimensions': [
-                        {
-                            'Name': 'Server',
-                            'Value': server
-                        },
-                    ],
-                    'Unit': 'Count',
-                    'Value': data['NetworkData']['TotalPacketsOutAllInterfaces']
-                },
-            ]
-        )
+        for interface, status in data['NetworkData']['LinkStatus'].items():
+            self.cloudwatch.put_metric_data(
+                Namespace=f'ServerManager/NetworkInterface',
+                MetricData=[
+                    {
+                        'MetricName': 'LinkStatus',
+                        'Dimensions': [
+                            {
+                                'Name': 'Server',
+                                'Value': server
+                            },
+                            {
+                                'Name': 'Interface',
+                                'Value': interface
+                            }
+                        ],
+                        'Value': 1 if status else 0
+                    },
+                ]
+            )
 
         # RAM Metrics
         self.cloudwatch.put_metric_data(
-            Namespace=self.namespace,
+            Namespace=f'ServerManager/RAM',
             MetricData=[
                 {
-                    'MetricName': 'RAMUsage',
+                    'MetricName': 'Usage',
                     'Dimensions': [
                         {
                             'Name': 'Server',
