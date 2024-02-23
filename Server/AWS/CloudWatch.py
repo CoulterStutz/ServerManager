@@ -143,8 +143,8 @@ class CloudWatch:
                                     'Value': 'Server'
                                 },
                             ],
-                            'Unit': 'int',
-                            'Value': drive
+                            'Unit': 'Count',
+                            'Value': data['StorageData']['DrivesWriteOperations'][drive]
                         },
                     ]
                 )
@@ -162,7 +162,7 @@ class CloudWatch:
                                     },
                                 ],
                                 'Unit': 'Count',
-                                'Value': drive
+                                'Value': data['StorageData']['DrivesWriteOperations'][drive]
                             },
                         ]
                     )
@@ -180,7 +180,7 @@ class CloudWatch:
                                     },
                                 ],
                                 'Unit': 'Bytes',
-                                'Value': drive
+                                'Value': data['StorageData']['DrivesWriteOperations'][drive]
                             },
                         ]
                     )
@@ -198,7 +198,7 @@ class CloudWatch:
                                         },
                                     ],
                                     'Unit': 'Bytes',
-                                    'Value': drive
+                                    'Value': data['StorageData']['DrivesWriteOperations'][drive]
                                 },
                             ]
                         )
