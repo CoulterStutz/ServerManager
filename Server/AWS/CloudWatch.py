@@ -1,23 +1,18 @@
 import boto3
+import json
 
-class CloudWatch():
-    def __init__(self, region):
-        self.cloudwatch = boto3.client("cloudwatch", region_name=region)
+class CloudWatchManager:
+    def __init__(self):
+        self.cloudwatch = boto3.client('cloudwatch')
 
     def report_metric(self, server, data):
         # CPU Metrics
         total_cpu_usage = sum(data['CPUData']['CoreUsage'])
         self.cloudwatch.put_metric_data(
-            Namespace='ServerManager/CPU',
+            Namespace=f'ServerManager/{server}/CPU',
             MetricData=[
                 {
                     'MetricName': 'TotalUsage',
-                    'Dimensions': [
-                        {
-                            'Name': 'Server',
-                            'Value': server
-                        },
-                    ],
                     'Unit': 'Percent',
                     'Value': total_cpu_usage
                 },
@@ -26,16 +21,10 @@ class CloudWatch():
 
         for core, usage in enumerate(data['CPUData']['CoreUsage'], 1):
             self.cloudwatch.put_metric_data(
-                Namespace=f'ServerManager/CPU',
+                Namespace=f'ServerManager/{server}/CPU/{core}',
                 MetricData=[
                     {
                         'MetricName': 'Usage',
-                        'Dimensions': [
-                            {
-                                'Name': 'Server',
-                                'Value': server
-                            },
-                        ],
                         'Unit': 'Percent',
                         'Value': usage
                     },
@@ -45,16 +34,10 @@ class CloudWatch():
         # Storage Metrics
         for i, drive in enumerate(data['StorageData']['DrivesFreeStorage'], 1):
             self.cloudwatch.put_metric_data(
-                Namespace=f'ServerManager/StorageDrive{i}',
+                Namespace=f'ServerManager/{server}/Storage/Drive{i}',
                 MetricData=[
                     {
                         'MetricName': 'FreeStorage',
-                        'Dimensions': [
-                            {
-                                'Name': 'Server',
-                                'Value': server
-                            },
-                        ],
                         'Unit': 'Bytes',
                         'Value': drive
                     },
@@ -64,20 +47,10 @@ class CloudWatch():
         # Network Metrics
         for interface, status in data['NetworkData']['LinkStatus'].items():
             self.cloudwatch.put_metric_data(
-                Namespace=f'ServerManager/NetworkInterface',
+                Namespace=f'ServerManager/{server}/Network/Interface/{interface}',
                 MetricData=[
                     {
                         'MetricName': 'LinkStatus',
-                        'Dimensions': [
-                            {
-                                'Name': 'Server',
-                                'Value': server
-                            },
-                            {
-                                'Name': 'Interface',
-                                'Value': interface
-                            }
-                        ],
                         'Value': 1 if status else 0
                     },
                 ]
@@ -85,18 +58,17 @@ class CloudWatch():
 
         # RAM Metrics
         self.cloudwatch.put_metric_data(
-            Namespace=f'ServerManager/RAM',
+            Namespace=f'ServerManager/{server}/RAM',
             MetricData=[
                 {
                     'MetricName': 'Usage',
-                    'Dimensions': [
-                        {
-                            'Name': 'Server',
-                            'Value': server
-                        },
-                    ],
                     'Unit': 'Percent',
                     'Value': data['RAMData']['RAMUsage']
                 },
             ]
         )
+
+# Example usage
+cloudwatch_manager = CloudWatchManager()
+data = {...}  # Your server data
+cloudwatch_manager.report_metric('TestServer1', data)
