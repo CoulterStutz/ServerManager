@@ -9,6 +9,11 @@ QuerySettings = {
 AWSSettings = {
     "RegionName": "us-west-1",
     "PinpointSettings": {
-        "CallWhenServerDown": True
+        "AlertSettings": {
+            "CallWhenServerDown": True,
+        },
+        "MessageSettings": {
+            "ServerDown": "This is an automated message from server manager, the following servers are down"
+        }
     }
 }
