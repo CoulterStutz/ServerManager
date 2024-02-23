@@ -1,15 +1,14 @@
 import boto3
-import json
 
-class CloudWatchManager:
-    def __init__(self):
-        self.cloudwatch = boto3.client('cloudwatch')
+class CloudWatch():
+    def __init__(self, region):
+        self.cloudwatch = boto3.client("cloudwatch", region_name=region)
 
     def report_metric(self, server, data):
         # CPU Metrics
         total_cpu_usage = sum(data['CPUData']['CoreUsage'])
         self.cloudwatch.put_metric_data(
-            Namespace=f'ServerManager/{server}/CPU',
+            Namespace=f'ServerManager/CPU',
             MetricData=[
                 {
                     'MetricName': 'TotalUsage',
@@ -21,7 +20,7 @@ class CloudWatchManager:
 
         for core, usage in enumerate(data['CPUData']['CoreUsage'], 1):
             self.cloudwatch.put_metric_data(
-                Namespace=f'ServerManager/{server}/CPU/{core}',
+                Namespace=f'ServerManager/CPU',
                 MetricData=[
                     {
                         'MetricName': 'Usage',
@@ -34,7 +33,7 @@ class CloudWatchManager:
         # Storage Metrics
         for i, drive in enumerate(data['StorageData']['DrivesFreeStorage'], 1):
             self.cloudwatch.put_metric_data(
-                Namespace=f'ServerManager/{server}/Storage/Drive{i}',
+                Namespace=f'ServerManager/Storage',
                 MetricData=[
                     {
                         'MetricName': 'FreeStorage',
@@ -47,7 +46,7 @@ class CloudWatchManager:
         # Network Metrics
         for interface, status in data['NetworkData']['LinkStatus'].items():
             self.cloudwatch.put_metric_data(
-                Namespace=f'ServerManager/{server}/Network/Interface/{interface}',
+                Namespace=f'ServerManager/Network',
                 MetricData=[
                     {
                         'MetricName': 'LinkStatus',
@@ -58,7 +57,7 @@ class CloudWatchManager:
 
         # RAM Metrics
         self.cloudwatch.put_metric_data(
-            Namespace=f'ServerManager/{server}/RAM',
+            Namespace=f'ServerManager/RAM',
             MetricData=[
                 {
                     'MetricName': 'Usage',
@@ -67,8 +66,3 @@ class CloudWatchManager:
                 },
             ]
         )
-
-# Example usage
-cloudwatch_manager = CloudWatchManager()
-data = {...}  # Your server data
-cloudwatch_manager.report_metric('TestServer1', data)
