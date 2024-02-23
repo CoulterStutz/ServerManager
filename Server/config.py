@@ -9,6 +9,8 @@ QuerySettings = {
 AWSSettings = {
     "RegionName": "us-west-1",
     "PinpointSettings": {
+        "ApplicationID": "xxxxx",
+        "DestinationNumbers": [""],
         "AlertSettings": {
             "CallWhenServerDown": True,
         }

@@ -6,6 +6,7 @@ servers = config.QuerySettings["QueryServers"]
 server_stats = {}
 
 cw = AWS.CloudWatch(config.AWSSettings["RegionName"])
+p = AWS.PinPoint('us-west-2', config.AWSSettings["PinpointSettings"]["ApplicationID"], config.AWSSettings["PinpointSettings"]["DestinationNumbers"])
 
 while True:
     server_stats = webhook.fetch_server_data(servers)
