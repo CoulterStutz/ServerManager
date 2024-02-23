@@ -20,7 +20,7 @@ class CloudWatch():
 
         for core, usage in enumerate(data['CPUData']['CoreUsage'], 1):
             self.cloudwatch.put_metric_data(
-                Namespace=f'ServerManager/CPU',
+                Namespace=f'ServerManager/coreCPU',
                 MetricData=[
                     {
                         'MetricName': 'Usage',
