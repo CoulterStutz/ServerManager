@@ -1,7 +1,7 @@
 import requests, json, time, webhook
 import sqlite3, AWS
 import config
-
+from termcolor import colored
 
 servers = config.QuerySettings["QueryServers"]
 server_stats = {}
@@ -16,17 +16,19 @@ while True:
     server_stats = webhook.fetch_server_data(servers)
     for x in server_stats:
         if server_stats[x] != 0:
-            print(server_stats[x])
+            print(f"{colored('Recieved Data: ', 'purple')}: {x}")
             cw.report_metric(x, server_stats[x], minimal=config.QuerySettings["minimalistMode"])
         else:
             if x not in dead_servers:
                 dead_server.append(x)
+                print(f'{colored("DEAD SERVERS FOUND: ")}: {dead_server}')
             else:
+                print(f'{colored("DEAD SERVER CAUSING TRAFFIC!", "red")}: {dead_servers}')
                 continue
 
     for x in dead_server:
         p.send_death_message(dead_server)
-        print(f'server go fuck, amazon know now :P {dead_server}')
+        print(f'{colored("Call Initiated")}: For Dead Servers {dead_server}')
         dead_servers.append(x)
 
     time.sleep(config.QuerySettings["FetchAndReportDelay"])
