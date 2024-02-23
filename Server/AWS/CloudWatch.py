@@ -11,11 +11,11 @@ class CloudWatch:
             Namespace=f'ServerManager/CPU',
             MetricData=[
                 {
-                    'MetricName': 'TotalUsage',
+                    'MetricName': 'TotalCPUUsage',
                     'Dimensions': [
                         {
-                            'Name': server,
-                            'Value': 'Server'
+                            'Name': 'Server',
+                            'Value': server
                         },
                     ],
                     'Unit': 'Percent',
@@ -33,8 +33,8 @@ class CloudWatch:
                             'MetricName': f'Core{core}',
                             'Dimensions': [
                                 {
-                                    'Name': server,
-                                    'Value': 'Server'
+                                    'Name': 'Server',
+                                    'Value': server
                                 },
                             ],
                             'Unit': 'Percent',
@@ -52,8 +52,8 @@ class CloudWatch:
                     'MetricName': f'TotalFreeStorage',
                     'Dimensions': [
                         {
-                            'Name': server,
-                            'Value': 'Server'
+                            'Name': 'Server',
+                            'Value': server
                         },
                     ],
                     'Unit': 'Bytes',
@@ -69,8 +69,8 @@ class CloudWatch:
                     'MetricName': f'TotalUsedStorage',
                     'Dimensions': [
                         {
-                            'Name': server,
-                            'Value': 'Server'
+                            'Name': 'Server',
+                            'Value': server
                         },
                     ],
                     'Unit': 'Bytes',
@@ -86,8 +86,8 @@ class CloudWatch:
                     'MetricName': f'TotalDriveCount',
                     'Dimensions': [
                         {
-                            'Name': server,
-                            'Value': 'Server'
+                            'Name': 'Server',
+                            'Value': server
                         },
                     ],
                     'Unit': 'Count',
@@ -105,8 +105,8 @@ class CloudWatch:
                             'MetricName': f'FreeStorageDrive{i}',
                             'Dimensions': [
                                 {
-                                    'Name': server,
-                                    'Value': 'Server'
+                                    'Name': 'Server',
+                                    'Value': server
                                 },
                             ],
                             'Unit': 'Bytes',
@@ -123,8 +123,8 @@ class CloudWatch:
                             'MetricName': f'UsedStorageDrive{i}',
                             'Dimensions': [
                                 {
-                                    'Name': server,
-                                    'Value': 'Server'
+                                    'Name': 'Server',
+                                    'Value': server
                                 },
                             ],
                             'Unit': 'Bytes',
@@ -141,8 +141,8 @@ class CloudWatch:
                                 'MetricName': f'DrivesWriteOperations{i}',
                                 'Dimensions': [
                                     {
-                                        'Name': server,
-                                        'Value': 'Server'
+                                        'Name': 'Server',
+                                        'Value': server
                                     },
                                 ],
                                 'Unit': 'Count',
@@ -159,8 +159,8 @@ class CloudWatch:
                                     'MetricName': f'DrivesReadOperations{i}',
                                     'Dimensions': [
                                         {
-                                            'Name': server,
-                                            'Value': 'Server'
+                                            'Name': 'Server',
+                                            'Value': server
                                         },
                                     ],
                                     'Unit': 'Count',
@@ -177,8 +177,8 @@ class CloudWatch:
                                     'MetricName': f'DriveReadBytes{i}',
                                     'Dimensions': [
                                         {
-                                            'Name': server,
-                                            'Value': 'Server'
+                                            'Name': 'Server',
+                                            'Value': server
                                         },
                                     ],
                                     'Unit': 'Bytes',
@@ -195,8 +195,8 @@ class CloudWatch:
                                         'MetricName': f'DriveWriteBytes{i}',
                                         'Dimensions': [
                                             {
-                                                'Name': server,
-                                                'Value': 'Server'
+                                                'Name': 'Server',
+                                                'Value': server
                                             },
                                         ],
                                         'Unit': 'Bytes',
@@ -214,8 +214,8 @@ class CloudWatch:
                         'MetricName': f'LinkStatus_{interface}',
                         'Dimensions': [
                             {
-                                'Name': server,
-                                'Value': 'Server'
+                                'Name': 'Server',
+                                'Value': server
                             },
                         ],
                         'Value': 1 if status else 0
@@ -231,8 +231,8 @@ class CloudWatch:
                     'MetricName': 'Usage',
                     'Dimensions': [
                         {
-                            'Name': server,
-                            'Value': 'Server'
+                            'Name': 'Server',
+                            'Value': server
                         },
                     ],
                     'Unit': 'Percent',
