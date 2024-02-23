@@ -1,4 +1,6 @@
 {
-  "FetchAndReportDelay": 10,
-  "minimalistMode": false
+  "QuerySettings": {
+    "FetchAndReportDelay": 10,
+    "minimalistMode": false
+  }
 }
