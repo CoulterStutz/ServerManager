@@ -4,7 +4,7 @@ class CloudWatch:
     def __init__(self, region):
         self.cloudwatch = boto3.client("cloudwatch", region_name=region)
 
-    def report_metric(self, server, data):
+    def report_metric(self, server, data, minimal=False):
         # CPU Metrics
         total_cpu_usage = data["CPUData"]["CPU Usage"]
         self.cloudwatch.put_metric_data(
@@ -24,23 +24,24 @@ class CloudWatch:
             ]
         )
 
-        for core, usage in enumerate(data['CPUData']['CoreUsage'], 1):
-            self.cloudwatch.put_metric_data(
-                Namespace=f'ServerManager/CPU',
-                MetricData=[
-                    {
-                        'MetricName': f'Core{core}',
-                        'Dimensions': [
-                            {
-                                'Name': server,
-                                'Value': 'Server'
-                            },
-                        ],
-                        'Unit': 'Percent',
-                        'Value': usage
-                    },
-                ]
-            )
+        if not minimal:
+            for core, usage in enumerate(data['CPUData']['CoreUsage'], 1):
+                self.cloudwatch.put_metric_data(
+                    Namespace=f'ServerManager/CPU',
+                    MetricData=[
+                        {
+                            'MetricName': f'Core{core}',
+                            'Dimensions': [
+                                {
+                                    'Name': server,
+                                    'Value': 'Server'
+                                },
+                            ],
+                            'Unit': 'Percent',
+                            'Value': usage
+                        },
+                    ]
+                )
 
         # Storage Metrics
 
@@ -95,66 +96,49 @@ class CloudWatch:
             ]
         )
 
-        for i, drive in enumerate(data['StorageData']['DrivesFreeStorage'], 1):
-            self.cloudwatch.put_metric_data(
-                Namespace=f'ServerManager/Storage',
-                MetricData=[
-                    {
-                        'MetricName': f'FreeStorageDrive{i}',
-                        'Dimensions': [
-                            {
-                                'Name': server,
-                                'Value': 'Server'
-                            },
-                        ],
-                        'Unit': 'Bytes',
-                        'Value': drive
-                    },
-                ]
-            )
-
-        for i, drive in enumerate(data['StorageData']['DrivesUsedStorage'], 1):
-            self.cloudwatch.put_metric_data(
-                Namespace=f'ServerManager/Storage',
-                MetricData=[
-                    {
-                        'MetricName': f'UsedStorageDrive{i}',
-                        'Dimensions': [
-                            {
-                                'Name': server,
-                                'Value': 'Server'
-                            },
-                        ],
-                        'Unit': 'Bytes',
-                        'Value': drive
-                    },
-                ]
-            )
-
-            for i, drive in enumerate(data['StorageData']['DrivesWriteOperations'], 1):
+        if not minimal:
+            for i, drive in enumerate(data['StorageData']['DrivesFreeStorage'], 1):
                 self.cloudwatch.put_metric_data(
                     Namespace=f'ServerManager/Storage',
                     MetricData=[
                         {
-                            'MetricName': f'DrivesWriteOperations{i}',
+                            'MetricName': f'FreeStorageDrive{i}',
                             'Dimensions': [
                                 {
                                     'Name': server,
                                     'Value': 'Server'
                                 },
                             ],
-                            'Unit': 'Count',
-                            'Value': data['StorageData']['DrivesWriteOperations'][drive]
+                            'Unit': 'Bytes',
+                            'Value': drive
                         },
                     ]
                 )
 
-                for i, drive in enumerate(data['StorageData']['DrivesReadOperations'], 1):
+            for i, drive in enumerate(data['StorageData']['DrivesUsedStorage'], 1):
+                self.cloudwatch.put_metric_data(
+                    Namespace=f'ServerManager/Storage',
+                    MetricData=[
+                        {
+                            'MetricName': f'UsedStorageDrive{i}',
+                            'Dimensions': [
+                                {
+                                    'Name': server,
+                                    'Value': 'Server'
+                                },
+                            ],
+                            'Unit': 'Bytes',
+                            'Value': drive
+                        },
+                    ]
+                )
+
+                for i, drive in enumerate(data['StorageData']['DrivesWriteOperations'], 1):
                     self.cloudwatch.put_metric_data(
                         Namespace=f'ServerManager/Storage',
                         MetricData=[
                             {
-                                'MetricName': f'DrivesReadOperations{i}',
+                                'MetricName': f'DrivesWriteOperations{i}',
                                 'Dimensions': [
                                     {
                                         'Name': server,
@@ -167,30 +151,30 @@ class CloudWatch:
                         ]
                     )
 
-                for i, drive in enumerate(data['StorageData']['DriveReadBytes'], 1):
-                    self.cloudwatch.put_metric_data(
-                        Namespace=f'ServerManager/Storage',
-                        MetricData=[
-                            {
-                                'MetricName': f'DriveReadBytes{i}',
-                                'Dimensions': [
-                                    {
-                                        'Name': server,
-                                        'Value': 'Server'
-                                    },
-                                ],
-                                'Unit': 'Bytes',
-                                'Value': data['StorageData']['DrivesWriteOperations'][drive]
-                            },
-                        ]
-                    )
-
-                    for i, drive in enumerate(data['StorageData']['DriveWriteBytes'], 1):
+                    for i, drive in enumerate(data['StorageData']['DrivesReadOperations'], 1):
                         self.cloudwatch.put_metric_data(
                             Namespace=f'ServerManager/Storage',
                             MetricData=[
                                 {
-                                    'MetricName': f'DriveWriteBytes{i}',
+                                    'MetricName': f'DrivesReadOperations{i}',
+                                    'Dimensions': [
+                                        {
+                                            'Name': server,
+                                            'Value': 'Server'
+                                        },
+                                    ],
+                                    'Unit': 'Count',
+                                    'Value': data['StorageData']['DrivesWriteOperations'][drive]
+                                },
+                            ]
+                        )
+
+                    for i, drive in enumerate(data['StorageData']['DriveReadBytes'], 1):
+                        self.cloudwatch.put_metric_data(
+                            Namespace=f'ServerManager/Storage',
+                            MetricData=[
+                                {
+                                    'MetricName': f'DriveReadBytes{i}',
                                     'Dimensions': [
                                         {
                                             'Name': server,
@@ -202,6 +186,24 @@ class CloudWatch:
                                 },
                             ]
                         )
+
+                        for i, drive in enumerate(data['StorageData']['DriveWriteBytes'], 1):
+                            self.cloudwatch.put_metric_data(
+                                Namespace=f'ServerManager/Storage',
+                                MetricData=[
+                                    {
+                                        'MetricName': f'DriveWriteBytes{i}',
+                                        'Dimensions': [
+                                            {
+                                                'Name': server,
+                                                'Value': 'Server'
+                                            },
+                                        ],
+                                        'Unit': 'Bytes',
+                                        'Value': data['StorageData']['DrivesWriteOperations'][drive]
+                                    },
+                                ]
+                            )
 
         # Network Metrics
         for interface, status in data['NetworkData']['LinkStatus'].items():
