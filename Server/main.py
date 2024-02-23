@@ -3,9 +3,9 @@ import sqlite3, AWS
 import config
 
 servers = config.QuerySettings["QueryServers"]
-server_stats = {"TestServer": None}
+server_stats = {}
 
-cw = AWS.CloudWatch("us-west-1")
+cw = AWS.CloudWatch(config.AWSSettings["RegionName"])
 
 while True:
     server_stats = webhook.fetch_server_data(servers)
