@@ -2,6 +2,8 @@ import psutil
 
 class Storage():
     def __init__(self):
+        self.read_time = None
+        self.write_time = None
         self.partitions = psutil.disk_partitions(all=False)
         self.drive_count = len(self.partitions)
         self.total_free_storage = None
@@ -21,10 +23,25 @@ class Storage():
         self.drives_free_storage = [psutil.disk_usage(part.mountpoint).free for part in partitions]
         self.drives_used_storage = [psutil.disk_usage(part.mountpoint).used for part in partitions]
         disk_io_counters = psutil.disk_io_counters(perdisk=True)
-        self.drives_write_operations = {drive: disk_io_counters[drive].write_count for drive in disk_io_counters}
-        self.drives_read_operations = {drive: disk_io_counters[drive].read_count for drive in disk_io_counters}
-        self.drive_write_bytes = {drive: disk_io_counters[drive].write_bytes for drive in disk_io_counters}
-        self.drive_read_bytes = {drive: disk_io_counters[drive].read_bytes for drive in disk_io_counters}
+
+        self.drives_write_operations = []
+        self.drives_read_operations = []
+        self.drive_write_bytes = []
+        self.drive_read_bytes = []
+        self.write_time = []
+        self.read_time = []
+
+        for x in disk_io_counters:
+            self.drives_read_operations.append(disk_io_counters[x][0])
+            self.drives_write_operations.append(disk_io_counters[x][1])
+            self.drive_read_bytes.append(disk_io_counters[x][2])
+            self.drive_write_bytes.append(disk_io_counters[x][3])
+
+            self.read_time.append(disk_io_counters[x][4])
+            self.write_time.append(disk_io_counters[x][5])
+
+            print()
+
 
     def return_storage_data(self):
         self.fetch_drive_data()
@@ -37,8 +54,10 @@ class Storage():
             "DrivesUsedStorage": self.drives_used_storage,
             "DrivesWriteOperations": self.drives_write_operations,
             "DrivesReadOperations": self.drives_read_operations,
-            "DriveWriteBytes": self.drive_write_bytes,
-            "DriveReadBytes": self.drive_read_bytes
+            "DrivesWriteBytes": self.drive_write_bytes,
+            "DrivesReadBytes": self.drive_read_bytes,
+            "DrivesWriteTime": self.write_time,
+            "DrivesReadTime": self.read_time
         }
 
 # Example usage
