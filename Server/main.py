@@ -2,6 +2,7 @@ import requests, json, time, webhook
 import sqlite3, AWS
 import config
 
+
 servers = config.QuerySettings["QueryServers"]
 server_stats = {}
 
