@@ -1,3 +1,4 @@
 {
-  "FetchAndReportDelay": 10
+  "FetchAndReportDelay": 10,
+  "minimalistMode": false
 }
