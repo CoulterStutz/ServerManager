@@ -7,5 +7,8 @@ QuerySettings = {
 }
 
 AWSSettings = {
-    "RegionName": "us-west-2"
+    "RegionName": "us-west-2",
+    "PinpointSettings": {
+        "CallWhenServerDown": True
+    }
 }
