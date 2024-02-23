@@ -6,7 +6,11 @@ def fetch_server_data(servers):
         server_stats[x] = None
 
     for x in servers:
-        response = requests.get(servers[x])
+        try:
+            response = requests.get(servers[x])
+        except:
+            server_stats[x] = 0
+            continue
 
         if response.status_code == 200:
             data = response.json()
