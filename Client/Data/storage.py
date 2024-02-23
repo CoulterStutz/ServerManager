@@ -28,8 +28,8 @@ class Storage():
         self.drives_read_operations = []
         self.drive_write_bytes = []
         self.drive_read_bytes = []
-        self.write_time = []
-        self.read_time = []
+        #self.write_time = []
+        #self.read_time = []
 
         for x in disk_io_counters:
             self.drives_read_operations.append(disk_io_counters[x][0])
@@ -37,8 +37,8 @@ class Storage():
             self.drive_read_bytes.append(disk_io_counters[x][2])
             self.drive_write_bytes.append(disk_io_counters[x][3])
 
-            self.read_time.append(disk_io_counters[x][4])
-            self.write_time.append(disk_io_counters[x][5])
+            #self.read_time.append(disk_io_counters[x][4])
+            #self.write_time.append(disk_io_counters[x][5])
 
             print()
 
@@ -55,9 +55,7 @@ class Storage():
             "DrivesWriteOperations": self.drives_write_operations,
             "DrivesReadOperations": self.drives_read_operations,
             "DrivesWriteBytes": self.drive_write_bytes,
-            "DrivesReadBytes": self.drive_read_bytes,
-            "DrivesWriteTime": self.write_time,
-            "DrivesReadTime": self.read_time
+            "DrivesReadBytes": self.drive_read_bytes
         }
 
 # Example usage

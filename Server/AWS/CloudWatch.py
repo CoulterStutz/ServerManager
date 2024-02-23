@@ -203,10 +203,6 @@ class CloudWatch:
                             ]
                         )
 
-
-
-
-
         # Network Metrics
         for interface, status in data['NetworkData']['LinkStatus'].items():
             self.cloudwatch.put_metric_data(
