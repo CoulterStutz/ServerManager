@@ -1,6 +1,6 @@
-import requests, json, time, webhook
-import sqlite3, AWS
-import config
+import threading
+import time, webhook
+import config, AWS
 from termcolor import colored
 
 servers = config.QuerySettings["QueryServers"]
@@ -11,24 +11,29 @@ p = AWS.PinPoint('us-west-2', config.AWSSettings["PinpointSettings"]["Applicatio
 
 dead_servers = []
 
-while True:
-    dead_server = []
-    server_stats = webhook.fetch_server_data(servers)
-    for x in server_stats:
-        if server_stats[x] != 0:
-            print(f"{colored('Recieved Data: ', 'purple')}: {x}")
-            cw.report_metric(x, server_stats[x], minimal=config.QuerySettings["minimalistMode"])
-        else:
-            if x not in dead_servers:
-                dead_server.append(x)
-                print(f'{colored("DEAD SERVERS FOUND: ")}: {dead_server}')
+def query_loop():
+    while True:
+        dead_server = []
+        server_stats = webhook.fetch_server_data(servers)
+        for x in server_stats:
+            if server_stats[x] != 0:
+                print(f"{colored('Recieved Data: ', 'magenta')}: {x}")
+                cw.report_metric(x, server_stats[x], minimal=config.QuerySettings["minimalistMode"])
             else:
-                print(f'{colored("DEAD SERVER CAUSING TRAFFIC!", "red")}: {dead_servers}')
-                continue
+                if x not in dead_servers:
+                    dead_server.append(x)
+                    print(f'{colored("DEAD SERVERS FOUND: ")}: {dead_server}')
+                else:
+                    print(f'{colored("DEAD SERVER CAUSING TRAFFIC!", "red")}: {dead_servers}')
+                    continue
 
-    for x in dead_server:
-        p.send_death_message(dead_server)
-        print(f'{colored("Call Initiated")}: For Dead Servers {dead_server}')
-        dead_servers.append(x)
+        for x in dead_server:
+            p.send_death_message(dead_server)
+            print(f'{colored("Call Initiated")}: For Dead Servers {dead_server}')
+            dead_servers.append(x)
 
-    time.sleep(config.QuerySettings["FetchAndReportDelay"])
+        time.sleep(config.QuerySettings["FetchAndReportDelay"])
+
+
+if __name__ == "__main__":
+    wh_thread = threading.Thread(target=query_loop())
