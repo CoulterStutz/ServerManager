@@ -37,3 +37,4 @@ def query_loop():
 
 if __name__ == "__main__":
     wh_thread = threading.Thread(target=query_loop())
+    wh_thread.start()
