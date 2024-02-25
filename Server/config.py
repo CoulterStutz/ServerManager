@@ -16,3 +16,16 @@ AWSSettings = {
         }
     }
 }
+
+InterfaceSettings = {
+    "IP": "0.0.0.0",
+    "Port": 80,
+    "PasswordAuthentication": False,
+    "Metrics": {
+        "AWSCPUMetricsLink": "",
+        "AWSStorageMetricsLink": "",
+        "AWSNetworkMetricsLink": "",
+        "AWSRamMetricsLink": "",
+        "CustomMetrics": {}
+    }
+}
