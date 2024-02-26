@@ -21,5 +21,9 @@ class Interface():
         def index():
             return flask.render_template("index")
 
+        @self.interface.route("/metrics")
+        def metrics():
+            return flask.render_template("metrics")
+
     def run(self):
         self.interface.run(self.host, self.port)
