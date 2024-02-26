@@ -1,0 +1,5 @@
+requests
+termcolor
+boto3
+json
+threading

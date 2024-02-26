@@ -1,0 +1,5 @@
+flask
+requests
+termcolor
+psutil
+wmi
