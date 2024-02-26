@@ -18,7 +18,8 @@ def query_loop():
         for x in server_stats:
             if server_stats[x] != 0:
                 print(f"{colored('Recieved Data: ', 'magenta')}: {x}")
-                cw.report_metric(x, server_stats[x], minimal=config.QuerySettings["minimalistMode"])
+                if config.AWSSettings["CloudWatchSettings"]["MetricReporting"]:
+                    cw.report_metric(x, server_stats[x], minimal=config.QuerySettings["minimalistMode"])
             else:
                 if x not in dead_servers:
                     dead_server.append(x)
@@ -28,8 +29,9 @@ def query_loop():
                     continue
 
         for x in dead_server:
-            p.send_death_message(dead_server)
-            print(f'{colored("Call Initiated")}: For Dead Servers {dead_server}')
+            if config.AWSSettings["PinpointSettings"]["AlertSettings"]["CallWhenServersDown"]:
+                p.send_death_message(dead_server)
+                print(f'{colored("Call Initiated")}: For Dead Servers {dead_server}')
             dead_servers.append(x)
 
         time.sleep(config.QuerySettings["FetchAndReportDelay"])
