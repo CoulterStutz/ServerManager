@@ -8,6 +8,9 @@ QuerySettings = {
 
 AWSSettings = {
     "RegionName": "us-west-2",
+    "CloudWatchSettings": {
+      "MetricReporting": True
+    },
     "PinpointSettings": {
         "ApplicationID": "YOUR-APPLICATION-ID",
         "DestinationNumbers": [],
