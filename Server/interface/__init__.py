@@ -1,3 +1,4 @@
+import flask
 from flask import *
 
 class Interface():
@@ -15,3 +16,10 @@ class Interface():
         self.CPUMetrics = self.metrics["AWSNetworkMetricsLink"]
         self.CPUMetrics = self.metrics["AWSRamMetricsLink"]
         self.custom_metrics = self.metrics["CustomMetrics"]
+
+        @self.interface.route("/")
+        def index():
+            return flask.render_template("index")
+
+    def run(self):
+        self.interface.run(self.host, self.port)
