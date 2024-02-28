@@ -29,7 +29,7 @@ def query_loop():
                     continue
 
         for x in dead_server:
-            if config.AWSSettings["PinpointSettings"]["AlertSettings"]["CallWhenServersDown"]:
+            if config.AWSSettings["PinpointSettings"]["AlertSettings"]["CallWhenServersDown"] and x not in config.AWSSettings["PinpointSettings"]["AlertIgnoreList"]:
                 p.send_death_message(dead_server)
                 print(f'{colored("Call Initiated")}: For Dead Servers {dead_server}')
             dead_servers.append(x)
