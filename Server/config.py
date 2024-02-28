@@ -14,6 +14,7 @@ AWSSettings = {
     "PinpointSettings": {
         "ApplicationID": "YOUR-APPLICATION-ID",
         "DestinationNumbers": [],
+        "AlertIgnoreList": "TestServer",
         "AlertSettings": {
             "CallWhenServerDown": True,
         }
