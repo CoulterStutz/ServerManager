@@ -17,4 +17,4 @@ class WebhookManager():
     def update_data(self):
         self.data = self.dm.return_data_json()
     def run(self):
-        self.app.run(port=5001)
+        self.app.run("0.0.0.0", port=5001)
