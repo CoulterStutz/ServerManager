@@ -14,6 +14,9 @@ class WebhookManager():
             self.update_data()
             return self.data
 
+        @self.app.route('/shutdown')
+
+
     def update_data(self):
         self.data = self.dm.return_data_json()
     def run(self):
