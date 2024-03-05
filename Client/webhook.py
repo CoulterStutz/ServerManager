@@ -15,7 +15,8 @@ class WebhookManager():
             return self.data
 
         @self.app.route('/shutdown')
-
+        def shutdown():
+            None
 
     def update_data(self):
         self.data = self.dm.return_data_json()
