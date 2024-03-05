@@ -26,7 +26,7 @@ class WebhookManager():
 
     @app.route('/shutdown')
     def shutdown():
-        # Implement shutdown logic here
+        os.system("shutdown -h")
         return jsonify({"message": "Shutdown command sent"})
 
     def update_data(self):
