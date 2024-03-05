@@ -2,9 +2,18 @@ from flask import Flask, jsonify, request
 import sys
 sys.path.append("/Data")
 import Data
+import subprocess
+
+def get_mac_address(ip_address):
+    try:
+        arp_output = subprocess.check_output(['arp', '-n', ip_address])
+        # Parse the ARP output to extract the MAC address
+        mac_address = arp_output.decode().split()[3]
+        return mac_address
+    except subprocess.CalledProcessError:
+        return None
 
 app = Flask(__name__)
-
 class WebhookManager():
     def __init__(self):
         self.dm = Data.DataManager()
