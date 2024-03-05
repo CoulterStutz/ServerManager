@@ -8,6 +8,7 @@ server_stats = {}
 
 cw = AWS.CloudWatch(config.AWSSettings["RegionName"])
 p = AWS.PinPoint('us-west-2', config.AWSSettings["PinpointSettings"]["ApplicationID"], config.AWSSettings["PinpointSettings"]["DestinationNumbers"])
+custom_metrics = config.AWSSettings["PinpointSettings"]["AlertSettings"]["CustomServerMetrics"]
 
 dead_servers = []
 
@@ -17,7 +18,7 @@ def query_loop():
         server_stats = webhook.fetch_server_data(servers)
         for x in server_stats:
             if server_stats[x] != 0:
-                print(f"{colored('Recieved Data: ', 'magenta')}: {x}")
+                print(f"{colored('Recieved Data', 'magenta')}: {x}")
                 if config.AWSSettings["CloudWatchSettings"]["MetricReporting"]:
                     cw.report_metric(x, server_stats[x], minimal=config.QuerySettings["minimalistMode"])
             else:

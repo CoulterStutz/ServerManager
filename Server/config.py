@@ -17,6 +17,12 @@ AWSSettings = {
         "AlertIgnoreList": "TestServer",
         "AlertSettings": {
             "CallWhenServerDown": True,
+            "CustomServerMetrics": {
+                "TotalCPUUsage": {
+                    "ValueGreaterThen": 90,
+                    "ValueLessThen": 3
+                }
+            }
         }
     }
 }
