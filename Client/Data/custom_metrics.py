@@ -1,2 +1,4 @@
 class CustomMetric():
-    None
+    def __init__(namespace):
+       self.namespace = namespace
+       self.custom_metrics = {}
