@@ -1,8 +1,3 @@
 AuthenticationSettings = {
-    "Users": {
-        "MACAddress": {
-            "IPAddress": "",
-            "Permissions": {}
-        }
-    }
+    "AuthorizedServer": "MAC ADDRESS"
 }
