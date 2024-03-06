@@ -46,14 +46,17 @@ class SocketServer:
 
     def accept_commands(self):
         while True:
-            command = input("\nServerManager>> ")
-            if command.split()[0] == "add":
-                if command.split()[1] == "new-authed-user":
-                    auth_info = command.split()[2], command.split()[3], command.split()[4]
-
-            if command == "exit":
-                self.server.close()
-                sys.exit()
+            try:
+                command = input("\nServerManager>> ")
+                if command.split()[0] == "add":
+                    if command.split()[1] == "new-authed-user":
+                        auth_info = command.split()[2], command.split()[3], command.split()[4]
+                        print(auth_info)
+                if command == "exit":
+                    self.server.close()
+                    sys.exit()
+            except IndexError:
+                None
 
 if __name__ == "__main__":
     server = SocketServer('localhost', 12345)
