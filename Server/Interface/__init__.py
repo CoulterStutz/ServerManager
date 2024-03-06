@@ -1,4 +1,5 @@
 import socket, threading, sqlite3
+from .sql import *
 
 class InterfaceServer():
     def __init__(self, host, port):
