@@ -50,6 +50,7 @@ class SocketServer:
             if command.split()[0] == "add":
                 if command.split()[1] == "new-authed-user":
                     auth_info = command.split()[2], command.split()[3], command.split()[4]
+
             if command == "exit":
                 self.server.close()
                 sys.exit()
