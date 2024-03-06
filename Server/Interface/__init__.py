@@ -1,7 +1,7 @@
 import socket
 import threading
 import sys
-from .sql import *
+from sql import *
 
 class SocketServer:
     def __init__(self, host, port):
@@ -46,8 +46,10 @@ class SocketServer:
 
     def accept_commands(self):
         while True:
-            command = input("Enter command: ")
-            # Handle server commands here
+            command = input("\nServerManager>> ")
+            if command.split()[0] == "add":
+                if command.split()[1] == "new-authed-user":
+                    auth_info = command.split()[2], command.split()[3], command.split()[4]
             if command == "exit":
                 self.server.close()
                 sys.exit()
