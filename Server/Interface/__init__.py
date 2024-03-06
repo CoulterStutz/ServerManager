@@ -1,8 +1,7 @@
 import socket
 import threading
 import sys
-from auth import AuthDB
-from permissions import PermissionsDB
+from .sql import *
 
 class SocketServer:
     def __init__(self, host, port):
