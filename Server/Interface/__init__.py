@@ -1,40 +1,59 @@
-import socket, threading, sqlite3
-from .sql import *
+import socket
+import threading
+import sys
+from auth import AuthDB
+from permissions import PermissionsDB
 
-class InterfaceServer():
+class SocketServer:
     def __init__(self, host, port):
         self.host = host
         self.port = port
-        self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_socket.bind((self.host, self.port))
-        self.client_threads = []
+        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.server.bind((self.host, self.port))
+        self.auth_db = AuthDB()
+        self.permissions_db = PermissionsDB()
 
-    def start(self):
-        self.server_socket.listen(5)
-        print(f"Server listening on {self.host}:{self.port}")
-        while True:
-            client_socket, address = self.server_socket.accept()
-            print(f"Connected to {address}")
-            client_thread = threading.Thread(target=self.handle_client, args=(client_socket, address))
-            client_thread.start()
-            self.client_threads.append(client_thread)
-
-    def handle_client(self, client_socket, address):
+    def listen_for_client(self, client):
         while True:
             try:
-                data = client_socket.recv(1024)
-                if not data:
-                    break
-                print(f"Received data from {address}: {data.decode()}")
-                client_socket.sendall(data)  # Echo back the data
+                message = client.recv(1024).decode('utf-8')
+                if message:
+                    print(f"Received command from client: {message}")
+                    # Handle command here
             except Exception as e:
-                print(f"Error handling client {address}: {e}")
+                print(f"Error handling client message: {e}")
+                client.close()
                 break
-        print(f"Closing connection to {address}")
-        client_socket.close()
 
-    def stop(self):
-        print("Stopping server...")
-        for client_thread in self.client_threads:
-            client_thread.join()
-        self.server_socket.close()
+    def start(self):
+        self.server.listen(5)
+        print(f"Server listening on {self.host}:{self.port}")
+
+        while True:
+            client, address = self.server.accept()
+            print(f"Connection from {address} has been established.")
+
+            # Authenticate user
+            username = client.recv(1024).decode('utf-8')
+            password = client.recv(1024).decode('utf-8')
+            if self.auth_db.check_auth(username, password):
+                print("User authenticated successfully.")
+                client.send("Authentication successful.".encode('utf-8'))
+                threading.Thread(target=self.listen_for_client, args=(client,)).start()
+            else:
+                print("Authentication failed.")
+                client.send("Authentication failed.".encode('utf-8'))
+                client.close()
+
+    def accept_commands(self):
+        while True:
+            command = input("Enter command: ")
+            # Handle server commands here
+            if command == "exit":
+                self.server.close()
+                sys.exit()
+
+if __name__ == "__main__":
+    server = SocketServer('localhost', 12345)
+    threading.Thread(target=server.start).start()
+    server.accept_commands()
