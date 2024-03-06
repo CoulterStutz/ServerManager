@@ -9,3 +9,6 @@ class CustomMetric():
 class CustomMetrics():
     def __init__(self):
         self.custom_metrics = []
+
+    def get_custom_metrics():
+        None    # iterate logic in here for custon metrics
