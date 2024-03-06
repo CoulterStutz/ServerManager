@@ -7,8 +7,15 @@ class CustomMetric():
         self.value = value
 
 class CustomMetrics():
-    def __init__(self):
-        self.custom_metrics = []
+    def __init__(self, custom_metrics:list):
+        self.custom_metrics = custom_metrics
 
     def get_custom_metrics():
-        None    # iterate logic in here for custon metrics
+        # Implement custom metric logic
+        return self.custom_metrics
+
+if __name__ == "__main__":
+    Metric1 = Metric("1", 1)
+    Metric2 = Metric("2", 2)
+    Metric3 = Metric("3", 3)
+    cms = CustomMetrics([Metric1, Metric2, Metric3])
