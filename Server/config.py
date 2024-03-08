@@ -16,7 +16,7 @@ AWSSettings = {
         "DestinationNumbers": [],
         "AlertIgnoreList": "TestServer",
         "AlertSettings": {
-            "CallWhenServerDown": True,
+            "CallWhenServersDown": True,
             "CustomServerMetrics": {
                 "TotalCPUUsage": {
                     "ValueGreaterThen": 90,
