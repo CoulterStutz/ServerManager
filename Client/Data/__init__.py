@@ -4,7 +4,6 @@ from .cpu import CPU
 from .storage import Storage
 from .network import Network
 from .mem import RAM
-from .custom_metrics import CustomMetrics
 import json
 
 class DataManager():
